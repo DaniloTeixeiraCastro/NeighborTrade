@@ -2,13 +2,13 @@
 {
     public class Pagamento
     {
-        public int PagamentoID { get; set; } // PK
-        public int UtilizadorID { get; set; } // FK - Utilizador
-        public int CompraID { get; set; } // FK - Compra
-        public decimal Valor { get; set; }
-        public DateTime DataPagamento { get; set; }
-        public TipoPagamento MetodoPagamento { get; set; }
-        public StatusGeral Status { get; set; }
+        public int PagamentoID { get; set; } // Primary Key
+        public int UtilizadorID { get; private set; } // Foreign Key para Utilizador
+        public int CompraID { get; private set; } // Foreign Key para Compra
+        public decimal Valor { get; private set; }
+        public DateTime DataPagamento { get; private set; }
+        public TipoPagamento MetodoPagamento { get; private set; }
+        public StatusGeral Status { get; private set; }
 
         public Pagamento(int utilizadorID, int compraID, decimal valor, TipoPagamento metodoPagamento)
         {
@@ -29,10 +29,14 @@
         /// </summary>
         public async Task EfetuarPagamentoAsync()
         {
+            if (Status != StatusGeral.Pendente)
+            {
+                throw new InvalidOperationException("O pagamento já foi processado ou está num estado inválido.");
+            }
+
             // Simula uma operação assíncrona
             await Task.Delay(100);
             Status = StatusGeral.Concluido;
-            // Substituir por um mecanismo de logging apropriado
             Console.WriteLine("Pagamento efetuado com sucesso.");
         }
 
@@ -41,19 +45,15 @@
         /// </summary>
         public async Task ReembolsarPagamentoAsync()
         {
-            if (Status == StatusGeral.Concluido)
+            if (Status != StatusGeral.Concluido)
             {
-                // Simula uma operação assíncrona
-                await Task.Delay(100);
-                Status = StatusGeral.Reembolsado;
-                // Substituir por um mecanismo de logging apropriado
-                Console.WriteLine("Pagamento reembolsado.");
+                throw new InvalidOperationException("Somente pagamentos concluídos podem ser reembolsados.");
             }
-            else
-            {
-                // Substituir por um mecanismo de logging apropriado
-                Console.WriteLine("O pagamento não pode ser reembolsado.");
-            }
+
+            // Simula uma operação assíncrona
+            await Task.Delay(100);
+            Status = StatusGeral.Reembolsado;
+            Console.WriteLine("Pagamento reembolsado com sucesso.");
         }
     }
 }

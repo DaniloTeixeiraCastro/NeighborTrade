@@ -50,14 +50,18 @@
     {
         Enviada,
         Recebida,
-        Lida
+        NaoLida,
+        Lida,
+        Eliminada
     }
 
     public enum NotaAvaliacao
     {
-        Nota1,
-        Nota2,
-        Nota3,
+        Pessima = 1,
+        Ruim = 2,
+        Regular = 3,
+        Boa = 4,
+        Excelente = 5
     }
 
     public enum TipoNotificacao

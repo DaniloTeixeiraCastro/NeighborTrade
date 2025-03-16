@@ -2,16 +2,21 @@
 {
     public class Notificacao
     {
-        public int NotificacaoID { get; set; } // PK
-        public int UtilizadorID { get; set; } // FK - Utilizador
-        public string Mensagem { get; set; }
-        public DateTime DataNotificacao { get; set; }
-        public bool Lida { get; set; }
-        public TipoNotificacao ReferenciaTipo { get; set; }
-        public int ReferenciaID { get; set; } // ID do item relacionado à notificação (ex: Anúncio, Compra, etc.)
+        public int NotificacaoID { get; set; } // Primary Key
+        public int UtilizadorID { get; private set; } // Foreign Key para Utilizador
+        public string Mensagem { get; private set; }
+        public DateTime DataNotificacao { get; private set; }
+        public bool Lida { get; private set; }
+        public TipoNotificacao ReferenciaTipo { get; private set; }
+        public int ReferenciaID { get; private set; } // ID do item relacionado à notificação
 
         public Notificacao(int utilizadorID, string mensagem, TipoNotificacao referenciaTipo, int referenciaID)
         {
+            if (string.IsNullOrWhiteSpace(mensagem))
+            {
+                throw new ArgumentException("A mensagem da notificação não pode estar vazia.", nameof(mensagem));
+            }
+
             UtilizadorID = utilizadorID;
             Mensagem = mensagem;
             ReferenciaTipo = referenciaTipo;
@@ -36,3 +41,4 @@
             Console.WriteLine($"Notificação {NotificacaoID} marcada como lida.");
         }
     }
+}

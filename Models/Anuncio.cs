@@ -1,6 +1,5 @@
 ﻿namespace NeighborTrade.Models
 {
-{
     public class Anuncio
     {
         public int AnuncioID { get; set; }
@@ -20,11 +19,20 @@
 
         public void CriarAnuncio()
         {
+            if (!ValidarAnuncio())
+            {
+                throw new InvalidOperationException("Erro: Anúncio inválido. Verifique os campos obrigatórios.");
+            }
             Console.WriteLine("Anúncio criado com sucesso!");
         }
 
         public void SubmeterAnuncio()
         {
+            if (!ValidarAnuncio())
+            {
+                throw new InvalidOperationException("Erro: Anúncio inválido. Não pode ser submetido.");
+            }
+            Status = StatusGeral.Pendente;
             Console.WriteLine("Anúncio submetido para aprovação.");
         }
 
@@ -38,12 +46,20 @@
             Titulo = novoTitulo;
             Descricao = novaDescricao;
             Preco = novoPreco;
+
+            if (!ValidarAnuncio())
+            {
+                throw new InvalidOperationException("Erro: Alterações tornaram o anúncio inválido.");
+            }
+
             Console.WriteLine("Anúncio editado com sucesso.");
         }
 
         private bool ValidarAnuncio()
         {
-            return !string.IsNullOrWhiteSpace(Titulo) && !string.IsNullOrWhiteSpace(Descricao) && Preco > 0;
+            return !string.IsNullOrWhiteSpace(Titulo) &&
+                   !string.IsNullOrWhiteSpace(Descricao) &&
+                   Preco > 0;
         }
 
         public static List<Anuncio> ListarAnuncios()
@@ -51,5 +67,4 @@
             return new List<Anuncio>(); // Simulação de uma lista vazia, depois pode integrar com BD
         }
     }
-}
 }
