@@ -58,8 +58,8 @@
     public enum NotaAvaliacao
     {
         Pessima = 1,
-        Ruim = 2,
-        Regular = 3,
+        Má = 2,
+        Media = 3,
         Boa = 4,
         Excelente = 5
     }
