@@ -13,7 +13,8 @@
         Finalizado,
         EmProcesso,
         Reembolsado,
-        Suspenso
+        Suspenso,
+        
     }
 
     public enum TipoUtilizador
