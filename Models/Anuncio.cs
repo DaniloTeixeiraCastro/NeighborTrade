@@ -11,6 +11,8 @@
         public TipoCategoria Categoria { get; set; }
         public int AprovacaoID { get; set; } // FK para Aprovacao
         public DateTime DataPublicacao { get; set; }
+        public static List<Anuncio> ListaAnuncios { get; set; } = new List<Anuncio>();
+
 
         public Anuncio()
         {
@@ -38,7 +40,13 @@
 
         public void EliminarAnuncio()
         {
-            Console.WriteLine("Anúncio eliminado.");
+            if (Status == StatusGeral.Aprovado)
+            {
+                throw new InvalidOperationException("Não é possível excluir este anúncio");
+            }
+
+            ListaAnuncios.Remove(this);
+            Console.WriteLine("Anúncio eliminado com sucesso.");
         }
 
         public void EditarAnuncio(string novoTitulo, string novaDescricao, float novoPreco)
